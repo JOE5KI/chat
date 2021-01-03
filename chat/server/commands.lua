@@ -3,7 +3,7 @@
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 function getIdentity(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local identifier = ESX.GetPlayerFromId(source).identifier
 	local result = MySQL.Sync.fetchAll("SELECT * FROM users WHERE identifier = @identifier", {['@identifier'] = identifier})
 	if result[1] ~= nil then
 		local identity = result[1]
@@ -36,6 +36,3 @@ RegisterCommand('ooc', function(source, args, rawCommand)
         args = { fal, msg }
     })
 end, false)
-
-
-

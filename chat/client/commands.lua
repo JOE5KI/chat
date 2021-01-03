@@ -12,16 +12,13 @@ Citizen.CreateThread(function()
 		Citizen.Wait(10)
 	end
 
-	PlayerData = ESX.GetPlayerData()
+	ESX.PlayerData = ESX.GetPlayerData()
 end)
 
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(60000)
-		PlayerData = ESX.GetPlayerData()
-	end
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+	ESX.PlayerData.job = job
 end)
-
 
 RegisterCommand('911', function(source, args, rawCommand)
     local source = GetPlayerServerId(PlayerId())
@@ -44,7 +41,7 @@ end, false)
 
 RegisterNetEvent('chat:EmergencySend911r')
 AddEventHandler('chat:EmergencySend911r', function(fal, caller, msg)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then
         TriggerEvent('chat:addMessage', {
         template = '<div class="chat-message emergency">911r {0} ({1}): {2} </div>',
         args = {caller, fal, msg}
@@ -54,7 +51,7 @@ end)
 
 RegisterNetEvent('chat:EmergencySend311r')
 AddEventHandler('chat:EmergencySend311r', function(fal, caller, msg)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then
         TriggerEvent('chat:addMessage', {
         template = '<div class="chat-message nonemergency">311r {0} ({1}): {2} </div>',
         args = {caller, fal, msg}
@@ -64,7 +61,7 @@ end)
 
 RegisterNetEvent('chat:EmergencySend911')
 AddEventHandler('chat:EmergencySend911', function(fal, caller, msg)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then
         TriggerEvent('chat:addMessage', {
         template = '<div class="chat-message emergency">911 {0} ({1}): {2} </div>',
         args = {caller, fal, msg}
@@ -74,7 +71,7 @@ end)
 
 RegisterNetEvent('chat:EmergencySend311')
 AddEventHandler('chat:EmergencySend311', function(fal, caller, msg)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then
         TriggerEvent('chat:addMessage', {
         template = '<div class="chat-message nonemergency">311 {0} ({1}): {2} </div>',
         args = {caller, fal, msg}
@@ -83,7 +80,7 @@ AddEventHandler('chat:EmergencySend311', function(fal, caller, msg)
 end)
 
 RegisterCommand('911r', function(target, args, rawCommand)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then
         local source = GetPlayerServerId(PlayerId())
         local target = tonumber(args[1])
         local msg = rawCommand:sub(8)
@@ -93,7 +90,7 @@ RegisterCommand('911r', function(target, args, rawCommand)
 end, false)
 
 RegisterCommand('311r', function(target, args, rawCommand)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then 
+    if ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'ambulance' then 
         local source = GetPlayerServerId(PlayerId())
         local target = tonumber(args[1])
         local msg = rawCommand:sub(8)
@@ -101,4 +98,3 @@ RegisterCommand('311r', function(target, args, rawCommand)
         TriggerServerEvent('311r', target, source, msg)
     end
 end, false)
-

@@ -1,10 +1,7 @@
 -- StarBlazt Chat
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-
-
 function getIdentity(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local identifier = ESX.GetPlayerFromId(source).identifier
 	local result = MySQL.Sync.fetchAll("SELECT * FROM users WHERE identifier = @identifier", {['@identifier'] = identifier})
 	if result[1] ~= nil then
 		local identity = result[1]
@@ -24,8 +21,6 @@ function getIdentity(source)
 		return nil
 	end
 end
-
-
 
 AddEventHandler("chatMessage", function(source, color, message)
     local src = source
@@ -110,7 +105,6 @@ AddEventHandler('chat:server:311r', function(target, caller, msg)
     CancelEvent()
 end)
 
-
 RegisterServerEvent('chat:server:311source')
 AddEventHandler('chat:server:311source', function(source, caller, msg)
     local name = getIdentity(source)
@@ -121,9 +115,6 @@ AddEventHandler('chat:server:311source', function(source, caller, msg)
     })
     CancelEvent()
 end)
-
-
-
 
 function stringsplit(inputstr, sep)
 	if sep == nil then
